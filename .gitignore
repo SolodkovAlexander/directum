@@ -2,4 +2,4 @@ bin/*
 .vs/*
 TestTask1/bin/*
 TestTask1/obj/*
-*.sln
+packages/*
