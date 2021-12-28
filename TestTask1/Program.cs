@@ -64,7 +64,17 @@ namespace TestTask1
 
             //Connect to database
             NpgsqlConnection databaseConnection = new NpgsqlConnection(databaseConnectionParams.ToString());
-            databaseConnection.Open();
+            try
+            {
+                databaseConnection.Open();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(String.Format("Connect to database with config file \"{0}\" finished with errors:\n{1}\n\nNo action.",
+                    configFileName,
+                    e.ToString()));
+                return;
+            }
             if (databaseConnection == null || databaseConnection.State != ConnectionState.Open)
             {
                 Console.WriteLine(String.Format("Can not connect to database with config file \"{0}\"!\nNo action.", configFileName));
@@ -92,7 +102,9 @@ namespace TestTask1
                            ON (employee_salary_sum_view.department_id = department.id)"
                 },
                 {
-                    "3", @""
+                    "3", @"SELECT department.id FROM test_task_schema.department
+                           LEFT JOIN test_task_schema.employee ON (employee.department_id = department.id)
+                           ORDER BY employee.salary DESC LIMIT 1"
                 },
                 {
                     "4", @"SELECT employee.salary
@@ -143,16 +155,16 @@ namespace TestTask1
                 switch (command)
                 {
                     case "1":
-                        Console.WriteLine(String.Format("Total salary by department with chiefs:"));
+                        Console.WriteLine(String.Format("Total salary by department with chiefs (salary):"));
                         break;
                     case "2":
-                        Console.WriteLine(String.Format("Total salary by department without chiefs:"));
+                        Console.WriteLine(String.Format("Total salary by department without chiefs (salary):"));
                         break;
                     case "3":
-                        Console.WriteLine(String.Format("Department with max employee's salary:"));
+                        Console.WriteLine(String.Format("Department with max employee's salary (department id):"));
                         break;
                     case "4":
-                        Console.WriteLine(String.Format("Department chiefs salaries in descending order:"));
+                        Console.WriteLine(String.Format("Department chiefs salaries in descending order (salary):"));
                         break;
                 }
                 while (reader.Read())
