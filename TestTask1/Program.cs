@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using System.IO;
 using System.Data;
 using Npgsql;
@@ -18,7 +17,7 @@ namespace TestTask1
         public string Port { get; set; }
         public string Password { get; set; }
 
-        public string ToString() => $"Server={HostName};Username={UserName};Database={DatabaseName};Port={Port};Password={Password};SSLMode=Prefer";
+        public override string ToString() => $"Server={HostName};Username={UserName};Database={DatabaseName};Port={Port};Password={Password};SSLMode=Prefer";
     }
 
     class Program
